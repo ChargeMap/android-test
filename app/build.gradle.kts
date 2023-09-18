@@ -2,6 +2,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.kotlinAndroid)
+    alias(libs.plugins.kotlinKapt)
+    alias(libs.plugins.kotlinKsp)
+    alias(libs.plugins.kotlinParcelize)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -60,6 +64,37 @@ dependencies {
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
+
+    testImplementation(libs.api.test)
+
+    //Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+
+    //Hilt
+    implementation(libs.hilt)
+    kapt(libs.hilt.compiler)
+    testImplementation(libs.hilt.test)
+    kaptTest(libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.test)
+    kaptAndroidTest(libs.hilt.compiler)
+
+    //Room
+    implementation(libs.room)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
+    testImplementation(libs.room.test)
+
+    //Glide
+    implementation(libs.glide)
+
+    //Kotlin ViewModel
+    implementation(libs.viewmodel)
+    implementation(libs.viewmodel.compose)
+
+    implementation(libs.truth)
+    testImplementation(libs.mockwebserver)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -67,4 +102,9 @@ dependencies {
     androidTestImplementation(libs.ui.test.junit4)
     debugImplementation(libs.ui.tooling)
     debugImplementation(libs.ui.test.manifest)
+
+}
+
+kapt {
+    correctErrorTypes = true
 }

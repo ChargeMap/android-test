@@ -3,5 +3,9 @@
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.kotlinAndroid) apply false
+    alias(libs.plugins.kotlinKapt) apply false
+    alias(libs.plugins.kotlinKsp) apply false
+    alias(libs.plugins.kotlinParcelize) apply false
+    alias(libs.plugins.hilt) apply false
 }
 true // Needed to make the Suppress annotation work for the plugins block
