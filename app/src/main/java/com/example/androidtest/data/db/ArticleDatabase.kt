@@ -9,7 +9,7 @@ import com.example.androidtest.data.db.entity.ArticleEntity
 
 @Database(
     entities = [ArticleEntity::class],
-    version = 1
+    version = 2
 )
 @TypeConverters(Converter::class)
 abstract class ArticleDatabase : RoomDatabase() {

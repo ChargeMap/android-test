@@ -21,6 +21,6 @@ object DbModule {
             context,
             ArticleDatabase::class.java,
             "articles_db.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 }

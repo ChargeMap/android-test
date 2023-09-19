@@ -27,7 +27,7 @@ object NewsApiModule {
             .create(NewsApi::class.java)
     }
 
-    private fun provideOkHttpClient(): OkHttpClient =
+     fun provideOkHttpClient(): OkHttpClient =
         OkHttpClient.Builder().apply {
             addInterceptor(Interceptor { chain ->
                 val newRequest =

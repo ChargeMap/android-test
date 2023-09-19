@@ -1,5 +1,7 @@
 package com.example.androidtest.di
 
+import com.example.androidtest.Constants.CATEGORY
+import com.example.androidtest.Constants.COUNTRY
 import com.example.androidtest.Constants.PAGE_SIZE
 import com.example.androidtest.data.network.NewsApi
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +13,11 @@ class NewsApiRepository @Inject constructor(
     private val dbRepository: DbRepository
 ) {
 
-    suspend fun getTopHeadlines(country: String, category: String, pageSize: Int = PAGE_SIZE) {
+    suspend fun getTopHeadlines(
+        country: String = COUNTRY,
+        category: String = CATEGORY,
+        pageSize: Int = PAGE_SIZE
+    ) {
         withContext(Dispatchers.IO) {
             runCatching {
                 newsApi.getCategoryTopHeadlines(
@@ -20,9 +26,8 @@ class NewsApiRepository @Inject constructor(
                     pageSize = pageSize
                 )
             }.onSuccess { response ->
-                dbRepository.insertArticles(response.body()?.articles.orEmpty())
-            }
+                dbRepository.insertArticles(response.body()?.articles.orEmpty().reversed())
+            }.onFailure { println(it.message) }
         }
     }
-
 }

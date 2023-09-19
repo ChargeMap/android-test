@@ -8,29 +8,20 @@ import com.example.androidtest.models.Source
 object Transformer {
     fun convertToArticleEntityList(articleList: List<Article>): List<ArticleEntity> {
         return articleList.map {
-            ArticleEntity(
-                author = it.author,
-                content = it.content,
-                source = convertSourceModelToSourceEntity(it.source),
-                description = it.description,
-                publishedAt = it.publishedAt,
-                url = it.url,
-                urlToImage = it.urlToImage,
-                title = it.title
-            )
+            convertArticleModelToArticleEntity(it)
         }
     }
 
     fun convertArticleModelToArticleEntity(article: Article): ArticleEntity {
         return ArticleEntity(
-            author = article.author,
-            content = article.content,
+            author = article.author.orEmpty(),
+            content = article.content.orEmpty(),
             source = convertSourceModelToSourceEntity(article.source),
-            description = article.description,
-            publishedAt = article.publishedAt,
-            url = article.url,
-            urlToImage = article.urlToImage,
-            title = article.title
+            description = article.description.orEmpty(),
+            publishedAt = article.publishedAt.orEmpty(),
+            url = article.url.orEmpty(),
+            urlToImage = article.urlToImage.orEmpty(),
+            title = article.title.orEmpty()
 
         )
     }
@@ -38,14 +29,6 @@ object Transformer {
     private fun convertSourceModelToSourceEntity(source: Source?): SourceEntity? {
         source?.let {
             return SourceEntity(source.id, source.name)
-        }
-
-        return null
-    }
-
-    private fun convertSourceEntityToSourceModel(sourceEntity: SourceEntity?): Source? {
-        sourceEntity?.let {
-            return Source(sourceEntity.id, sourceEntity.name)
         }
 
         return null
