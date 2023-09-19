@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.material)
+    implementation(libs.compose.navigation)
 
     testImplementation(libs.api.test)
 

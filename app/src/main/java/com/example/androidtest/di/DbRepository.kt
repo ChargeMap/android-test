@@ -19,4 +19,8 @@ class DbRepository @Inject constructor(private val articleDatabase: ArticleDatab
         return articleDatabase.getArticleDao().getAllArticles()
     }
 
+    fun getArticleById(id: Int): Flow<ArticleEntity> {
+        return articleDatabase.getArticleDao().getArticleById(id)
+    }
+
 }

@@ -25,6 +25,9 @@ class NewsFeedViewModel @Inject constructor(
     private val _refreshing = MutableStateFlow(false)
     val refreshing: StateFlow<Boolean> = _refreshing
 
+    private val _article = MutableStateFlow<ArticleEntity?>(null)
+    val article: StateFlow<ArticleEntity?> = _article
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             getTopHeadLines()
@@ -44,5 +47,13 @@ class NewsFeedViewModel @Inject constructor(
             dbRepository.clearTable()
             getTopHeadLines()
         }.also { _refreshing.emit(false) }
+    }
+
+    suspend fun getArticleById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            dbRepository.getArticleById(id).collect {
+                _article.value = it
+            }
+        }
     }
 }
