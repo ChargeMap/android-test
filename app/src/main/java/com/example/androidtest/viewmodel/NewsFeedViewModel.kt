@@ -34,7 +34,7 @@ class NewsFeedViewModel @Inject constructor(
         }
     }
 
-    private suspend fun getTopHeadLines() {
+    suspend fun getTopHeadLines() {
         apiRepository.getTopHeadlines()
         dbRepository.getAllArticles().collect {
             _topHeadlines.value = it

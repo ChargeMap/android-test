@@ -26,16 +26,16 @@ class NewsApiRepositoryTest {
     @Test
     fun `get top headlines returns error`() {
         val response = runBlocking {
-            newsApi.getCategoryTopHeadlines(country = "aaaaa", category = CATEGORY, pageSize = 10)
+            newsApi.getTopHeadlines(country = "aaaaa", category = CATEGORY, pageSize = 10)
         }
         assertThat(response.body()).isNull()
     }
 
     @Test
-    fun `get top headlines returns true`() {
+    fun `get top headlines returns filled list`() {
         val response = runBlocking {
-            newsApi.getCategoryTopHeadlines(country = COUNTRY, category = CATEGORY, pageSize = 10)
+            newsApi.getTopHeadlines(country = COUNTRY, category = CATEGORY, pageSize = 10)
         }
-        assertThat(response.body()).isNotNull()
+        assertThat(response.body()?.articles).isNotEmpty()
     }
 }

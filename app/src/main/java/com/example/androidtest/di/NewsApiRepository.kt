@@ -20,7 +20,7 @@ class NewsApiRepository @Inject constructor(
     ) {
         withContext(Dispatchers.IO) {
             runCatching {
-                newsApi.getCategoryTopHeadlines(
+                newsApi.getTopHeadlines(
                     country = country,
                     category = category,
                     pageSize = pageSize
