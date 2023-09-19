@@ -54,7 +54,6 @@ fun ArticleCardView(
         val scrollState = rememberScrollState()
         modifier
             .verticalScroll(scrollState)
-            .fillMaxWidth()
             .wrapContentHeight()
     }
 

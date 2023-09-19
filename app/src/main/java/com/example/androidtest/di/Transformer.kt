@@ -4,6 +4,7 @@ import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.data.db.entity.SourceEntity
 import com.example.androidtest.models.Article
 import com.example.androidtest.models.Source
+import com.example.newsfeed.presentation.util.DateUtil
 
 object Transformer {
     fun convertToArticleEntityList(articleList: List<Article>): List<ArticleEntity> {
@@ -12,13 +13,16 @@ object Transformer {
         }
     }
 
-    fun convertArticleModelToArticleEntity(article: Article): ArticleEntity {
+    private fun convertArticleModelToArticleEntity(article: Article): ArticleEntity {
         return ArticleEntity(
             author = article.author.orEmpty(),
             content = article.content.orEmpty(),
             source = convertSourceModelToSourceEntity(article.source),
             description = article.description.orEmpty(),
-            publishedAt = article.publishedAt.orEmpty(),
+            publishedAt = DateUtil.formatDate(
+                article.publishedAt.orEmpty(),
+                DateUtil.DATE_FORMAT_FULL
+            ),
             url = article.url.orEmpty(),
             urlToImage = article.urlToImage.orEmpty(),
             title = article.title.orEmpty()
