@@ -1,7 +1,6 @@
 package com.example.androidtest.data.db.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -17,6 +16,6 @@ interface ArticleDao {
     @Query("SELECT * FROM articles")
     fun getAllArticles(): Flow<List<ArticleEntity>>
 
-    @Delete
-    suspend fun deleteArticle(article: ArticleEntity)
+    @Query("DELETE FROM articles")
+    suspend fun clearTable()
 }

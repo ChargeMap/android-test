@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,13 +14,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -34,28 +43,52 @@ import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.ui.theme.AndroidTestTheme
 import com.example.androidtest.viewmodel.NewsFeedViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val viewModel: NewsFeedViewModel by viewModels()
 
+    @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             AndroidTestTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
+                Scaffold(
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(8.dp),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+                        .fillMaxSize(),
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = getString(R.string.app_name)) },
+                            colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
+                        )
+                    }
+                ) { contentPadding ->
+
+                    val scope = rememberCoroutineScope()
+                    val refreshing = viewModel.refreshing.collectAsState()
+                    val pullRefreshState =
+                        rememberPullRefreshState(
+                            refreshing.value,
+                            { scope.launch { viewModel.refresh() } })
                     val newsFeed = viewModel.topHeadlines.collectAsState()
 
-                    if (newsFeed.value.isNotEmpty()) {
-                        FeedListView(newsFeed = newsFeed.value)
+                    Box(
+                        modifier = Modifier
+                            .padding(contentPadding)
+                            .pullRefresh(state = pullRefreshState)
+                    ) {
+                        if (newsFeed.value.isNotEmpty()) {
+                            FeedListView(newsFeed = newsFeed.value)
+                        }
+
+                        PullRefreshIndicator(
+                            refreshing.value,
+                            pullRefreshState,
+                            Modifier.align(Alignment.TopCenter)
+                        )
                     }
                 }
             }

@@ -22,7 +22,6 @@ object Transformer {
             url = article.url.orEmpty(),
             urlToImage = article.urlToImage.orEmpty(),
             title = article.title.orEmpty()
-
         )
     }
 

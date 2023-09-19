@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.di.DbRepository
 import com.example.androidtest.di.NewsApiRepository
-import com.example.androidtest.models.Article
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -22,12 +22,27 @@ class NewsFeedViewModel @Inject constructor(
     private val _topHeadlines = MutableStateFlow<List<ArticleEntity>>(emptyList())
     val topHeadlines: StateFlow<List<ArticleEntity>> = _topHeadlines
 
+    private val _refreshing = MutableStateFlow(false)
+    val refreshing: StateFlow<Boolean> = _refreshing
+
     init {
-        viewModelScope.launch {
-            apiRepository.getTopHeadlines()
-            dbRepository.getAllArticles().collect {
-                _topHeadlines.value = it
-            }
+        viewModelScope.launch(Dispatchers.IO) {
+            getTopHeadLines()
         }
+    }
+
+    private suspend fun getTopHeadLines() {
+        apiRepository.getTopHeadlines()
+        dbRepository.getAllArticles().collect {
+            _topHeadlines.value = it
+        }
+    }
+
+    suspend fun refresh() {
+        _refreshing.emit(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            dbRepository.clearTable()
+            getTopHeadLines()
+        }.also { _refreshing.emit(false) }
     }
 }
