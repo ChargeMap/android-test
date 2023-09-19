@@ -57,25 +57,26 @@ class NewsFeedViewModelTest {
     @Test
     fun `get top headlines should not be empty`() = runBlocking {
         val flow: Flow<List<ArticleEntity>> = flow {
-            emit(listOf())
+            emit(listOf(mockedArticleEntity))
         }
 
         whenever(dbRepository.getAllArticles()).thenReturn(flow)
 
         viewModel.getTopHeadLines()
 
-        assertThat(viewModel.topHeadlines.value.isEmpty()).isTrue()
+        assertThat(viewModel.topHeadlines.value.isEmpty()).isFalse()
     }
 
 
     @Test
     fun `refresh top headlines leaves empty table`() {
         runBlocking {
-            val flow: Flow<List<ArticleEntity>> = flow { listOf<ArticleEntity>() }
+            val flow: Flow<List<ArticleEntity>> = flow { listOf(mockedArticleEntity) }
 
             whenever(dbRepository.getAllArticles()).thenReturn(flow)
 
             dbRepository.clearTable()
+            viewModel.getTopHeadLines()
 
             assertThat(viewModel.topHeadlines.value.isEmpty()).isTrue()
         }

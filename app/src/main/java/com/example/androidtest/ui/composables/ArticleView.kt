@@ -1,4 +1,4 @@
-package com.example.androidtest.views
+package com.example.androidtest.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.androidtest.R
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.ui.theme.AndroidTestTheme
 
@@ -48,7 +50,7 @@ fun ArticleCardView(
     article: ArticleEntity,
     isDetails: Boolean = false
 ) {
-    val modifier = Modifier.padding(8.dp)
+    val modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding))
 
     if (isDetails) {
         val scrollState = rememberScrollState()
@@ -70,7 +72,7 @@ fun ArticleCardView(
         }
     ) {
         Column(
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(dimensionResource(id = R.dimen.default_padding)),
             verticalArrangement = Arrangement.Center
         ) {
             Text(
@@ -82,9 +84,9 @@ fun ArticleCardView(
 
             GlideImage(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(dimensionResource(id = R.dimen.default_padding))
                     .fillMaxWidth()
-                    .height(150.dp),
+                    .height(dimensionResource(id = R.dimen.article_image_height)),
                 model = article.urlToImage,
                 contentDescription = "",
                 alignment = Alignment.Center,
@@ -92,7 +94,7 @@ fun ArticleCardView(
             )
 
             Text(
-                modifier = Modifier.padding(bottom = 8.dp),
+                modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.default_padding)),
                 text = if (isDetails) {
                     article.content
                 } else {
@@ -109,11 +111,11 @@ fun ArticleCardView(
 @Composable
 fun ArticleAuthorAndPublicationView(article: ArticleEntity) {
     Row(
-        modifier = Modifier.padding(bottom = 12.dp),
+        modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.large_padding)),
         horizontalArrangement = Arrangement.Start
     ) {
         Text(
-            modifier = Modifier.padding(end = 8.dp),
+            modifier = Modifier.padding(end = dimensionResource(id = R.dimen.default_padding)),
             text = article.author,
             textAlign = TextAlign.Start,
             fontSize = 10.sp,

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ChargeMap Test</string>
+    <string name="switch_ui_mode">Use Dark Mode</string>
 </resources>

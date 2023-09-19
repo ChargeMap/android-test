@@ -1,4 +1,4 @@
-package com.example.androidtest.views
+package com.example.androidtest.ui.composables
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
