@@ -7,6 +7,7 @@ import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -69,38 +70,25 @@ class NewsFeedViewModelTest {
 
 
     @Test
-    fun `refresh top headlines leaves empty table`() {
-        runBlocking {
-            val flow: Flow<List<ArticleEntity>> = flow { listOf(mockedArticleEntity) }
+    fun `refresh top headlines leaves empty table`() = runTest {
+        val flow: Flow<List<ArticleEntity>> = flow { emit(listOf(mockedArticleEntity)) }
 
-            whenever(dbRepository.getAllArticles()).thenReturn(flow)
+        whenever(dbRepository.getAllArticles()).thenReturn(flow)
 
-            dbRepository.clearTable()
-            viewModel.getTopHeadLines()
+        dbRepository.clearTable()
+        viewModel.getTopHeadLines()
 
-            assertThat(viewModel.topHeadlines.value.isEmpty()).isTrue()
-        }
+        assertThat(viewModel.topHeadlines.value.isEmpty()).isTrue()
     }
 
     @Test
-    fun `refresh top headlines clears table and refills it`() {
-        runBlocking {
-            val flow: Flow<List<ArticleEntity>> = flow { listOf<ArticleEntity>() }
+    fun `refresh top headlines clears table and refills it`() = runTest {
+        val flow: Flow<List<ArticleEntity>> = flow { emit(listOf(mockedArticleEntity)) }
 
-            whenever(dbRepository.getAllArticles()).thenReturn(flow)
+        whenever(dbRepository.getAllArticles()).thenReturn(flow)
+        dbRepository.clearTable()
+        viewModel.getTopHeadLines()
 
-            assertThat(viewModel.topHeadlines.value.isEmpty()).isFalse()
-
-            dbRepository.clearTable()
-
-            assertThat(viewModel.topHeadlines.value.isEmpty()).isTrue()
-
-            apiRepository.getTopHeadlines()
-            dbRepository.getAllArticles()
-
-            assertThat(viewModel.topHeadlines.value.isEmpty()).isFalse()
-        }
-
-
+        assertThat(viewModel.topHeadlines.value.isEmpty()).isFalse()
     }
 }

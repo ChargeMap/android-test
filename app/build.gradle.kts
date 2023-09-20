@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.kotlin.coroutine)
 
     testImplementation(libs.api.test)
+    testImplementation(libs.kotlin.coroutine.test)
 
     //Retrofit
     implementation(libs.retrofit)

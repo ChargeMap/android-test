@@ -1,5 +1,6 @@
 package com.example.androidtest.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidtest.data.db.entity.ArticleEntity
@@ -12,12 +13,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+
 @HiltViewModel
 class NewsFeedViewModel @Inject constructor(
     private val apiRepository: NewsApiRepository,
     private val dbRepository: DbRepository
 ) :
     ViewModel() {
+    private val TAG = NewsFeedViewModel::class.simpleName
 
     private val _topHeadlines = MutableStateFlow<List<ArticleEntity>>(emptyList())
     val topHeadlines: StateFlow<List<ArticleEntity>> = _topHeadlines
@@ -35,24 +38,37 @@ class NewsFeedViewModel @Inject constructor(
     }
 
     suspend fun getTopHeadLines() {
-        apiRepository.getTopHeadlines()
-        dbRepository.getAllArticles().collect {
-            _topHeadlines.value = it
+        try {
+            apiRepository.getTopHeadlines()
+            dbRepository.getAllArticles().collect {
+                _topHeadlines.value = it
+            }
+        } catch (e: Exception) {
+            e.message?.let { Log.e(TAG, it) }
         }
     }
 
     suspend fun refresh() {
         _refreshing.emit(true)
         viewModelScope.launch(Dispatchers.IO) {
-            dbRepository.clearTable()
-            getTopHeadLines()
+            try {
+                dbRepository.clearTable()
+                getTopHeadLines()
+            } catch (e: Exception) {
+                e.message?.let { Log.e(TAG, it) }
+            }
+
         }.also { _refreshing.emit(false) }
     }
 
     suspend fun getArticleById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            dbRepository.getArticleById(id).collect {
-                _article.value = it
+            try {
+                dbRepository.getArticleById(id).collect {
+                    _article.value = it
+                }
+            } catch (e: Exception) {
+                e.message?.let { Log.e(TAG, it) }
             }
         }
     }

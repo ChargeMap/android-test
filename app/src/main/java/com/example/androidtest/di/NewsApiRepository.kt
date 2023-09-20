@@ -1,5 +1,6 @@
 package com.example.androidtest.di
 
+import android.util.Log
 import com.example.androidtest.Constants.CATEGORY
 import com.example.androidtest.Constants.COUNTRY
 import com.example.androidtest.Constants.PAGE_SIZE
@@ -12,6 +13,7 @@ class NewsApiRepository @Inject constructor(
     private val newsApi: NewsApi,
     private val dbRepository: DbRepository
 ) {
+    private val TAG = NewsApiRepository::class.simpleName
 
     suspend fun getTopHeadlines(
         country: String = COUNTRY,
@@ -26,8 +28,13 @@ class NewsApiRepository @Inject constructor(
                     pageSize = pageSize
                 )
             }.onSuccess { response ->
-                dbRepository.insertArticles(response.body()?.articles.orEmpty().reversed())
-            }.onFailure { println(it.message) }
+                try {
+                    dbRepository.insertArticles(response.body()?.articles.orEmpty().reversed())
+                } catch (e: Exception) {
+                    e.message?.let { Log.e(TAG, it) }
+                }
+
+            }.onFailure { it.message?.let { message -> Log.e(TAG, message) } }
         }
     }
 }
