@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Switch
@@ -45,7 +46,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val checkedState = remember { mutableStateOf(false) }
+            val darkThemeInit = isSystemInDarkTheme()
+            val checkedState = remember { mutableStateOf(darkThemeInit) }
 
             AndroidTestTheme(darkTheme = checkedState.value) {
                 Scaffold(
