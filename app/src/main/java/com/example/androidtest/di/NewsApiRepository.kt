@@ -1,40 +1,74 @@
 package com.example.androidtest.di
 
-import android.util.Log
-import com.example.androidtest.Constants.CATEGORY
-import com.example.androidtest.Constants.COUNTRY
 import com.example.androidtest.Constants.PAGE_SIZE
+import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.data.network.NewsApi
+import com.example.androidtest.viewmodel.NewsFeedViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class NewsApiRepository @Inject constructor(
-    private val newsApi: NewsApi,
-    private val dbRepository: DbRepository
+    private val newsApi: NewsApi
 ) {
-    private val TAG = NewsApiRepository::class.simpleName
-
-    suspend fun getTopHeadlines(
-        country: String = COUNTRY,
-        category: String = CATEGORY,
-        pageSize: Int = PAGE_SIZE
-    ) {
-        withContext(Dispatchers.IO) {
-            runCatching {
+    private suspend fun getTopHeadlines(country: String, category: String): List<ArticleEntity>? {
+        val articleList = withContext(Dispatchers.IO) {
+            try {
                 newsApi.getTopHeadlines(
                     country = country,
                     category = category,
-                    pageSize = pageSize
+                    pageSize = PAGE_SIZE
                 )
-            }.onSuccess { response ->
-                try {
-                    dbRepository.insertArticles(response.body()?.articles.orEmpty().reversed())
-                } catch (e: Exception) {
-                    e.message?.let { Log.e(TAG, it) }
-                }
+            } catch (exc: Exception) {
+                throw exc
+            }
+        }.body()?.articles?.filterNot { article -> article.title == "[Removed]" }
 
-            }.onFailure { it.message?.let { message -> Log.e(TAG, message) } }
+        return articleList?.let { Transformer.convertToArticleEntityList(it, country) }
+    }
+
+    suspend fun getMultipleTopHeadlines(filters: NewsFeedViewModel.NewsFilters): List<ArticleEntity> {
+        val country = filters.country
+        val filledList = emptyList<ArticleEntity>().toMutableList()
+
+        try {
+            coroutineScope {
+                filters.categories.forEach { category ->
+                    val categoryHeadLinesDeferred =
+                        async { getTopHeadlines(country = country, category = category) }
+
+                    val categoryHeadLines = categoryHeadLinesDeferred.await()
+                    categoryHeadLines?.let {
+                        filledList.addAll(it)
+                    }
+                }
+            }
+        } catch (exc: Exception) {
+            throw exc
         }
+
+        return filledList
+    }
+
+    private fun getCountriesFilter(languageEnabled: MutableMap<String, Boolean>): String {
+        var country = ""
+
+        languageEnabled.forEach {
+            country = if (it.value) {
+                addCountry(country, it.key)
+            } else {
+                country
+            }
+        }
+
+        return country
+    }
+
+    private fun addCountry(country: String, newCountry: String) = if (country.isEmpty()) {
+        newCountry
+    } else {
+        "$country, $newCountry"
     }
 }

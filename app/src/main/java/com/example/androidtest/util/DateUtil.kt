@@ -1,8 +1,8 @@
-package com.example.newsfeed.presentation.util
+package com.example.androidtest.util
 
 import android.util.Log
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 object DateUtil {
 

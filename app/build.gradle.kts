@@ -67,9 +67,15 @@ dependencies {
     implementation(libs.material)
     implementation(libs.compose.navigation)
     implementation(libs.kotlin.coroutine)
+    implementation(libs.androidx.runtime.livedata)
 
     testImplementation(libs.api.test)
     testImplementation(libs.kotlin.coroutine.test)
+    testImplementation(libs.turbine)
+
+    //Chucker
+    debugImplementation (libs.chucker)
+    releaseImplementation (libs.chucker.no.op)
 
     //Retrofit
     implementation(libs.retrofit)
@@ -77,6 +83,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt)
+    implementation(libs.hilt.navigation)
     kapt(libs.hilt.compiler)
     testImplementation(libs.hilt.test)
     kaptTest(libs.hilt.compiler)

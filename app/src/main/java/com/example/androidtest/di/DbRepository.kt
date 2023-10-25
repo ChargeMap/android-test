@@ -2,25 +2,25 @@ package com.example.androidtest.di
 
 import com.example.androidtest.data.db.ArticleDatabase
 import com.example.androidtest.data.db.entity.ArticleEntity
-import com.example.androidtest.models.Article
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class DbRepository @Inject constructor(private val articleDatabase: ArticleDatabase) {
-    suspend fun insertArticles(articleList: List<Article>) {
-        articleDatabase.getArticleDao().insert(Transformer.convertToArticleEntityList(articleList))
+    suspend fun insertArticles(articleList: List<ArticleEntity>) {
+        articleDatabase.getArticleDao().insert(articleList)
     }
 
-    suspend fun clearTable() {
-        articleDatabase.getArticleDao().clearTable()
+    fun clearTable() = articleDatabase.clearAllTables()
+
+    fun getAllArticlesByCountry(country: String): Flow<List<ArticleEntity>> = flow {
+        emit(articleDatabase.getArticleDao().getArticlesByCountry(country).sortedByDescending {
+            it.publishedAt
+        })
     }
 
-    fun getAllArticles(): Flow<List<ArticleEntity>> {
-        return articleDatabase.getArticleDao().getAllArticles()
-    }
-
-    fun getArticleById(id: Int): Flow<ArticleEntity> {
-        return articleDatabase.getArticleDao().getArticleById(id)
+    fun getArticleById(id: Int): Flow<ArticleEntity> = flow {
+        emit(articleDatabase.getArticleDao().getArticleById(id))
     }
 
 }

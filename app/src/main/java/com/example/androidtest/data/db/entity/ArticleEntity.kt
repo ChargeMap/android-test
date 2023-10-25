@@ -5,8 +5,9 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "articles")
 data class ArticleEntity(
-    @PrimaryKey(autoGenerate = true)
-    var id: Int? = null,
+    @PrimaryKey
+    var id: Int,
+    var country: String,
     val author: String,
     val content: String,
     val description: String,

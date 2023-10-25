@@ -28,19 +28,22 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.androidtest.Constants
 import com.example.androidtest.R
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.ui.theme.AndroidTestTheme
 
 private val mockedArticle = ArticleEntity(
+    id = 0,
+    country = Constants.COUNTRY_US,
     author = "toto",
-    description = "Hello world",
-    title = "News title",
-    urlToImage = "https://image.cnbcfm.com/api/v1/image/106516157-1588351785968gettyimages-1209050413.jpeg?v=1695040122&w=1920&h=1080",
     content = "",
+    description = "Hello world",
     publishedAt = "",
+    source = null,
+    title = "News title",
     url = "",
-    source = null
+    urlToImage = "https://image.cnbcfm.com/api/v1/image/106516157-1588351785968gettyimages-1209050413.jpeg?v=1695040122&w=1920&h=1080"
 )
 
 @OptIn(ExperimentalGlideComposeApi::class, ExperimentalMaterial3Api::class)

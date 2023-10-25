@@ -8,8 +8,9 @@ import com.example.androidtest.data.db.entity.ArticleEntity
 
 
 @Database(
+    exportSchema = false,
     entities = [ArticleEntity::class],
-    version = 2
+    version = 4
 )
 @TypeConverters(Converter::class)
 abstract class ArticleDatabase : RoomDatabase() {

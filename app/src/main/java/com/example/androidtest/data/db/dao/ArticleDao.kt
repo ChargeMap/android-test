@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.androidtest.data.db.entity.ArticleEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ArticleDao {
@@ -13,12 +12,12 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(article: List<ArticleEntity>)
 
-    @Query("SELECT * FROM articles")
-    fun getAllArticles(): Flow<List<ArticleEntity>>
+    @Query("SELECT * FROM articles WHERE country=:country")
+    suspend fun getArticlesByCountry(country: String): List<ArticleEntity>
 
     @Query("SELECT * FROM articles WHERE id=:id")
-    fun getArticleById(id: Int): Flow<ArticleEntity>
+    suspend fun getArticleById(id: Int): ArticleEntity
 
-    @Query("DELETE FROM articles")
-    suspend fun clearTable()
+    @Query("DELETE FROM articles WHERE country =:country")
+    fun deleteByCountry(country: String)
 }
