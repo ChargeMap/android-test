@@ -3,6 +3,7 @@ package com.example.androidtest.di
 import com.example.androidtest.Constants.PAGE_SIZE
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.data.network.NewsApi
+import com.example.androidtest.util.Transformer
 import com.example.androidtest.viewmodel.NewsFeedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -49,7 +50,7 @@ class NewsApiRepository @Inject constructor(
             throw exc
         }
 
-        return filledList
+        return filledList.sortedByDescending { it.publishedAt }
     }
 
     private fun getCountriesFilter(languageEnabled: MutableMap<String, Boolean>): String {

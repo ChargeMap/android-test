@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.compose.navigation)
     implementation(libs.kotlin.coroutine)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.preference.ktx)
 
     testImplementation(libs.api.test)
     testImplementation(libs.kotlin.coroutine.test)

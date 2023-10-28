@@ -1,10 +1,9 @@
-package com.example.androidtest.di
+package com.example.androidtest.util
 
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.data.db.entity.SourceEntity
 import com.example.androidtest.models.Article
 import com.example.androidtest.models.Source
-import com.example.androidtest.util.DateUtil
 
 object Transformer {
     fun convertToArticleEntityList(articleList: List<Article>, country: String): List<ArticleEntity> {

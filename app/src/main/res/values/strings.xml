@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">ChargeMap Test</string>
 
-    <string name="options_enable_dark_mode">Enable Dark Mode</string>
-    <string name="options_disable_dark_mode">Disable Dark Mode</string>
+    <string name="settings_enable_dark_mode">Enable Dark Mode</string>
+    <string name="settings_disable_dark_mode">Disable Dark Mode</string>
+    <string name="settings_clear_data">Clear data</string>
+
+    <string name="options_access_settings">Settings</string>
     <string name="options_show_filter">Show filters</string>
     <string name="options_hide_filter">Hide filters</string>
 

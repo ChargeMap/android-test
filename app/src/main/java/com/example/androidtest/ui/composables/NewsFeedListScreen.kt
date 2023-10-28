@@ -1,9 +1,10 @@
 package com.example.androidtest.ui.composables
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -38,7 +39,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,12 +50,16 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Alignment.Companion.TopCenter
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.androidtest.Constants
 import com.example.androidtest.R
+import com.example.androidtest.SettingsActivity
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.viewmodel.NewsFeedViewModel
 import com.example.androidtest.viewmodel.UiState
@@ -64,10 +68,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OptionsMenu(checkedState: MutableState<Boolean>, viewModel: NewsFeedViewModel) {
+fun OptionsMenu(
+    viewModel: NewsFeedViewModel = hiltViewModel()
+) {
 
     var expanded by remember { mutableStateOf(false) }
     val displayFilters by viewModel.showFilters.collectAsState()
+    val context = LocalContext.current
 
     TopAppBar(
         title = { Text(text = stringResource(R.string.app_name)) },
@@ -78,21 +85,6 @@ fun OptionsMenu(checkedState: MutableState<Boolean>, viewModel: NewsFeedViewMode
             }
 
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-                DropdownMenuItem(onClick = {
-                    checkedState.value = !checkedState.value
-                    expanded = false
-                }) {
-                    Text(
-                        text = stringResource(
-                            id = if (!checkedState.value) {
-                                R.string.options_enable_dark_mode
-                            } else {
-                                R.string.options_disable_dark_mode
-                            }
-                        )
-                    )
-                }
-
                 DropdownMenuItem(onClick = {
                     viewModel.showHideFilters()
                     expanded = false
@@ -107,6 +99,15 @@ fun OptionsMenu(checkedState: MutableState<Boolean>, viewModel: NewsFeedViewMode
                             }
                         )
                     )
+                }
+
+                DropdownMenuItem(onClick = {
+                    context.startActivity(Intent(context, SettingsActivity::class.java))
+
+                    //checkedState.value = !checkedState.value
+                    expanded = false
+                }) {
+                    Text(text = stringResource(id = R.string.options_access_settings))
                 }
             }
         }
@@ -214,7 +215,7 @@ fun NewsFeedListScreen(
     modifier: Modifier,
     navController: NavController,
     viewModel: NewsFeedViewModel,
-    snackbarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState
 ) {
     val scope = rememberCoroutineScope()
     var refreshing = remember { false }
@@ -231,45 +232,38 @@ fun NewsFeedListScreen(
             .fillMaxSize()
             .pullRefresh(state = pullRefreshState)
     ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            if (showFilters) {
-                FiltersBar(viewModel = viewModel)
-            }
+        when (uiState) {
+            is UiState.Success -> FeedListView(
+                navController = navController,
+                newsFeed = (uiState as UiState.Success<List<ArticleEntity>>).data,
+                showFilters = showFilters
+            )
 
-            when (uiState) {
-                is UiState.Success -> FeedListView(
-                    navController = navController,
-                    newsFeed = (uiState as UiState.Success<List<ArticleEntity>>).data
-                )
-
-                is UiState.Error -> {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState())
-                    ) {
-                        LaunchedEffect(true) {
-                            scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    (uiState as UiState.Error).error,
-                                    duration = SnackbarDuration.Short
-                                )
-                            }
+            is UiState.Error -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    LaunchedEffect(true) {
+                        scope.launch {
+                            snackBarHostState.showSnackbar(
+                                (uiState as UiState.Error).error,
+                                duration = SnackbarDuration.Short
+                            )
                         }
                     }
                 }
+            }
 
-                is UiState.Loading -> {
-                    refreshing = !(uiState as UiState.Loading).firstLoading
-                }
+            is UiState.Loading -> {
+                refreshing = !(uiState as UiState.Loading).firstLoading
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             }
         }
 
-        if (refreshing) {
-            CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+        if (showFilters) {
+            FiltersBar(viewModel = viewModel)
         }
 
         PullRefreshIndicator(
@@ -283,7 +277,8 @@ fun NewsFeedListScreen(
 @Composable
 fun FeedListView(
     navController: NavController,
-    newsFeed: List<ArticleEntity>
+    newsFeed: List<ArticleEntity>,
+    showFilters: Boolean
 ) {
     val state = rememberLazyListState()
 
@@ -291,7 +286,8 @@ fun FeedListView(
         modifier = Modifier.fillMaxSize(),
         state = state,
         verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        contentPadding = PaddingValues(top = if (showFilters) 48.dp else 0.dp)
     ) {
         items(newsFeed) {
             ArticleCardView(navController = navController, article = it)

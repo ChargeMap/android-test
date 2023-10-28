@@ -62,6 +62,7 @@ class NewsFeedViewModel @Inject constructor(
                     }
 
                     articleList.isNotEmpty() -> UiState.Success(articleList)
+
                     else -> UiState.Error(context.getString(R.string.empty_list_message))
                 }
             )
