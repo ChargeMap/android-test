@@ -130,7 +130,7 @@ fun FiltersBar(viewModel: NewsFeedViewModel) {
     ) {
 
         item {
-            val usFilterSelected = filters.country == Constants.COUNTRY_US
+            val usFilterSelected = filters.country.contains(Constants.COUNTRY_US)
 
             ElevatedFilterChip(
                 modifier = modifier,
@@ -156,7 +156,7 @@ fun FiltersBar(viewModel: NewsFeedViewModel) {
         }
 
         item {
-            val frFilterSelected = filters.country == Constants.COUNTRY_FR
+            val frFilterSelected = filters.country.contains(Constants.COUNTRY_FR)
 
             ElevatedFilterChip(
                 modifier = modifier,

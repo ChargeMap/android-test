@@ -31,18 +31,20 @@ class NewsApiRepository @Inject constructor(
     }
 
     suspend fun getMultipleTopHeadlines(filters: NewsFeedViewModel.NewsFilters): List<ArticleEntity> {
-        val country = filters.country
         val filledList = emptyList<ArticleEntity>().toMutableList()
 
         try {
             coroutineScope {
                 filters.categories.forEach { category ->
-                    val categoryHeadLinesDeferred =
-                        async { getTopHeadlines(country = country, category = category) }
+                    filters.country.forEach { country ->
+                        val categoryHeadLinesDeferred =
+                            async { getTopHeadlines(country = country, category = category) }
 
-                    val categoryHeadLines = categoryHeadLinesDeferred.await()
-                    categoryHeadLines?.let {
-                        filledList.addAll(it)
+
+                        val categoryHeadLines = categoryHeadLinesDeferred.await()
+                        categoryHeadLines?.let {
+                            filledList.addAll(it)
+                        }
                     }
                 }
             }
@@ -51,25 +53,5 @@ class NewsApiRepository @Inject constructor(
         }
 
         return filledList.sortedByDescending { it.publishedAt }
-    }
-
-    private fun getCountriesFilter(languageEnabled: MutableMap<String, Boolean>): String {
-        var country = ""
-
-        languageEnabled.forEach {
-            country = if (it.value) {
-                addCountry(country, it.key)
-            } else {
-                country
-            }
-        }
-
-        return country
-    }
-
-    private fun addCountry(country: String, newCountry: String) = if (country.isEmpty()) {
-        newCountry
-    } else {
-        "$country, $newCountry"
     }
 }

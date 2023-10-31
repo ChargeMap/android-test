@@ -12,8 +12,8 @@ interface ArticleDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(article: List<ArticleEntity>)
 
-    @Query("SELECT * FROM articles WHERE country=:country")
-    suspend fun getArticlesByCountry(country: String): List<ArticleEntity>
+    @Query("SELECT * FROM articles WHERE country IN (:countries)")
+    suspend fun getArticlesByCountry(countries: List<String>): List<ArticleEntity>
 
     @Query("SELECT * FROM articles WHERE id=:id")
     suspend fun getArticleById(id: Int): ArticleEntity

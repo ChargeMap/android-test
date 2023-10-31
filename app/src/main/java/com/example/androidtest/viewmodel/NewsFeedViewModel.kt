@@ -28,6 +28,14 @@ class NewsFeedViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) :
     ViewModel() {
+
+    companion object {
+        enum class FilterType {
+            COUNTRY,
+            CATEGORY
+        }
+    }
+
     private val TAG = NewsFeedViewModel::class.simpleName
 
     private val _filters = MutableStateFlow(NewsFilters())
@@ -87,23 +95,36 @@ class NewsFeedViewModel @Inject constructor(
     }
 
     fun updateCountry(country: String) {
-        viewModelScope.launch(coroutineExceptionHandler) {
-            _filters.emit(_filters.value.copy(country = country))
-        }
-        refresh()
+        updateFilter(country, FilterType.COUNTRY)
     }
 
     fun updateCategory(category: String) {
-        val categories = if (_filters.value.categories.contains(category)) {
-            _filters.value.categories.filterNot { it == category }
+        updateFilter(category, FilterType.CATEGORY)
+    }
+
+    private fun updateFilter(filter: String, filterType: FilterType) {
+        val filterList = when (filterType) {
+            FilterType.COUNTRY -> _filters.value.country
+            FilterType.CATEGORY -> _filters.value.categories
+        }
+
+
+        val newFilters = if (filterList.contains(filter)) {
+            filterList.filterNot { it == filter }
         } else {
-            val newCategoriesList = _filters.value.categories.toMutableList()
-            newCategoriesList.add(category)
+            val newCategoriesList = filterList.toMutableList()
+            newCategoriesList.add(filter)
             newCategoriesList
         }
 
         viewModelScope.launch(coroutineExceptionHandler) {
-            _filters.emit(_filters.value.copy(categories = categories))
+            _filters.emit(
+                if (filterType == FilterType.CATEGORY) {
+                    _filters.value.copy(categories = newFilters)
+                } else {
+                    _filters.value.copy(country = newFilters)
+                }
+            )
         }
         refresh()
     }
@@ -113,7 +134,7 @@ class NewsFeedViewModel @Inject constructor(
     }
 
     data class NewsFilters(
-        val country: String = Constants.COUNTRY_US,
+        val country: List<String> = listOf(Constants.COUNTRY_US),
         val categories: List<String> = listOf(Constants.CATEGORY)
     )
 }

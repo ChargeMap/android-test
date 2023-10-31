@@ -13,7 +13,7 @@ class DbRepository @Inject constructor(private val articleDatabase: ArticleDatab
 
     fun clearTable() = articleDatabase.clearAllTables()
 
-    fun getAllArticlesByCountry(country: String): Flow<List<ArticleEntity>> = flow {
+    fun getAllArticlesByCountry(country: List<String>): Flow<List<ArticleEntity>> = flow {
         emit(articleDatabase.getArticleDao().getArticlesByCountry(country).sortedByDescending {
             it.publishedAt
         })
