@@ -3,44 +3,35 @@ package com.example.androidtest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.androidtest.ui.theme.AndroidTestTheme
+import com.example.androidtest.view.CarListComposable
+import com.example.androidtest.viewmodel.CarListViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AndroidTestTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+            // Retrieve cars data
+            val viewModel = CarListViewModel()
+            val carData by viewModel.carData.collectAsState()
+
+            Surface {
+                CarListComposable(carData)
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
 @Preview(showBackground = true)
 @Composable
-fun GreetingPreview() {
-    AndroidTestTheme {
-        Greeting("Android")
+fun CarListViewPreview() {
+    Surface {
+        val viewModel = CarListViewModel()
+        val carData by viewModel.carData.collectAsState()
+        CarListComposable(carData)
     }
 }
