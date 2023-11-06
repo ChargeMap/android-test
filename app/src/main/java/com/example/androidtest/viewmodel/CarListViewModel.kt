@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 class CarListViewModel : ViewModel() {
-    val carData: MutableStateFlow<List<CarDataModel>> = MutableStateFlow(emptyList())
+    val carData: MutableStateFlow<List<CarDataModel?>?> = MutableStateFlow(null)
     private val githubService: GithubService = GithubService.getInstance()
 
     // Number of elements to display
