@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androidtest.ui.theme.AppTheme
 import com.example.androidtest.view.CarListComposable
 import com.example.androidtest.viewmodel.CarListViewModel
 
@@ -25,8 +26,10 @@ class MainActivity : ComponentActivity() {
             val viewModel = CarListViewModel()
             val carData by viewModel.carData.collectAsState()
 
-            Surface {
-                CarListComposable(carData)
+            AppTheme {
+                Surface {
+                    CarListComposable(carData)
+                }
             }
         }
     }
