@@ -1,6 +1,6 @@
 package com.example.androidtest.api
 
-import com.example.androidtest.adapters.CarDataModelAdapter
+import com.example.androidtest.adapters.CarListAdapter
 import com.example.androidtest.model.CarDataModel
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -19,7 +19,7 @@ interface GithubService {
             if (githubService == null) {
                 val moshi = Moshi.Builder()
                     .add(KotlinJsonAdapterFactory())
-                    .add(CarDataModelAdapter())
+                    .add(CarListAdapter())
                     .build()
 
                 val retrofit = Retrofit.Builder()

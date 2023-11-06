@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonReader
 import com.squareup.moshi.JsonWriter
 import com.squareup.moshi.ToJson
 
-class CarDataModelAdapter : JsonAdapter<List<CarDataModel>>() {
+class CarListAdapter : JsonAdapter<List<CarDataModel>>() {
     @FromJson
     override fun fromJson(reader: JsonReader): List<CarDataModel> {
         val cars = mutableListOf<CarDataModel>()
