@@ -11,6 +11,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.androidtest.view.CarListComposable
 import com.example.androidtest.viewmodel.CarListViewModel
 
+/**
+ * To keep things simple, MainActivity is the entry-point and responsible of the car's list.
+ * Data provider is Github's raw json providing multiple make / model with their image.
+ * It was selected as a correct provider because the JSON object is representative of any webservice
+ * and the content fulfill the requirements of the test (image, title, subtitle).
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
