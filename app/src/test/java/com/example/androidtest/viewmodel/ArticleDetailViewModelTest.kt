@@ -6,6 +6,7 @@ import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.di.DbRepository
 import com.example.androidtest.util.DefaultDispatcherProviderTest
 import com.example.androidtest.util.DispatcherProvider
+import com.example.androidtest.viewmodel.articles.ArticleDetailViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf

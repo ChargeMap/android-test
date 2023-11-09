@@ -1,10 +1,11 @@
 package com.example.androidtest.di
 
+import com.example.androidtest.Constants
 import com.example.androidtest.Constants.PAGE_SIZE
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.data.network.NewsApi
 import com.example.androidtest.util.Transformer
-import com.example.androidtest.viewmodel.NewsFeedViewModel
+import com.example.androidtest.viewmodel.feed.NewsFeedViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -28,6 +29,40 @@ class NewsApiRepository @Inject constructor(
         }.body()?.articles?.filterNot { article -> article.title == "[Removed]" }
 
         return articleList?.let { Transformer.convertToArticleEntityList(it, country) }
+    }
+
+    suspend fun getEverythingBySearch(
+        searchText: String,
+        filters: NewsFeedViewModel.NewsFilters
+    ): List<ArticleEntity> {
+        val filledList = mutableListOf<ArticleEntity>()
+
+        try {
+            coroutineScope {
+                filters.country.forEach { country ->
+                    val language = if (country == Constants.COUNTRY_US) "en" else country
+
+                    val countryFeedDeferred =
+                        async(context = Dispatchers.IO) {
+                            newsApi.getEverythingBySearch(
+                                searchText = searchText,
+                                language = language
+                            )
+                        }
+
+                    val countryFeed = countryFeedDeferred.await()
+                        .body()?.articles?.filterNot { article -> article.title == "[Removed]" }
+                        ?.let { Transformer.convertToArticleEntityList(it, country) }
+
+                    countryFeed?.let {
+                        filledList.addAll(it)
+                    }
+                }
+            }
+        } catch (exc: Exception) {
+            throw exc
+        }
+        return filledList.sortedByDescending { it.publishedAt }
     }
 
     suspend fun getMultipleTopHeadlines(filters: NewsFeedViewModel.NewsFilters): List<ArticleEntity> {

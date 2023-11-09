@@ -1,10 +1,11 @@
-package com.example.androidtest.viewmodel
+package com.example.androidtest.viewmodel.articles
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.androidtest.data.db.entity.ArticleEntity
 import com.example.androidtest.di.DbRepository
 import com.example.androidtest.util.DispatcherProvider
+import com.example.androidtest.viewmodel.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.flow.MutableStateFlow

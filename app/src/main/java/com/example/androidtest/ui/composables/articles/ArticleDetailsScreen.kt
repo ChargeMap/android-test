@@ -1,4 +1,4 @@
-package com.example.androidtest.ui.composables
+package com.example.androidtest.ui.composables.articles
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.androidtest.data.db.entity.ArticleEntity
-import com.example.androidtest.viewmodel.ArticleDetailViewModel
+import com.example.androidtest.viewmodel.articles.ArticleDetailViewModel
 import com.example.androidtest.viewmodel.UiState
 
 @Composable

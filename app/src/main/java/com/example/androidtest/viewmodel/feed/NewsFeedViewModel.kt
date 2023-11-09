@@ -1,4 +1,4 @@
-package com.example.androidtest.viewmodel
+package com.example.androidtest.viewmodel.feed
 
 import android.content.Context
 import androidx.lifecycle.ViewModel
@@ -10,6 +10,7 @@ import com.example.androidtest.di.DbRepository
 import com.example.androidtest.di.NewsApiRepository
 import com.example.androidtest.util.DispatcherProvider
 import com.example.androidtest.util.NetworkUtil
+import com.example.androidtest.viewmodel.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineExceptionHandler
@@ -59,7 +60,7 @@ class NewsFeedViewModel @Inject constructor(
 
     private suspend fun fetchNews() = apiRepository.getMultipleTopHeadlines(_filters.value)
 
-    private fun handleResult(articleList: List<ArticleEntity>, insertIntoDb: Boolean = false) {
+    private fun handleResult(articleList: List<ArticleEntity>, insertIntoDb: Boolean = true) {
         viewModelScope.launch(dispatcherProvider.io) {
             _uiState.emit(
                 when {
@@ -77,6 +78,17 @@ class NewsFeedViewModel @Inject constructor(
         }
     }
 
+    fun searchByText(text: String) {
+        viewModelScope.launch(coroutineExceptionHandler) {
+            _uiState.emit(UiState.Loading(false))
+
+            val articleList =
+                apiRepository.getEverythingBySearch(searchText = text, filters = _filters.value)
+
+            handleResult(articleList)
+        }
+    }
+
     fun refresh(firstLoading: Boolean = false) {
         viewModelScope.launch(coroutineExceptionHandler) {
             _uiState.emit(UiState.Loading(firstLoading))
@@ -84,11 +96,11 @@ class NewsFeedViewModel @Inject constructor(
             if (NetworkUtil.hasInternetConnection(context)) {
                 val articleList = fetchNews()
 
-                handleResult(articleList, true)
+                handleResult(articleList)
             } else {
                 dbRepository.getAllArticlesByCountry(_filters.value.country)
                     .flowOn(dispatcherProvider.io).collect {
-                        handleResult(it)
+                        handleResult(it, false)
                     }
             }
         }

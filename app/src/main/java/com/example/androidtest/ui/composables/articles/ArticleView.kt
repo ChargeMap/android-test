@@ -1,4 +1,4 @@
-package com.example.androidtest.ui.composables
+package com.example.androidtest.ui.composables.articles
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

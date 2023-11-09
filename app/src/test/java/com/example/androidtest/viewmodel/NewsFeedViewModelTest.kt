@@ -7,6 +7,7 @@ import com.example.androidtest.di.DbRepository
 import com.example.androidtest.di.NewsApiRepository
 import com.example.androidtest.util.DefaultDispatcherProviderTest
 import com.example.androidtest.util.DispatcherProvider
+import com.example.androidtest.viewmodel.feed.NewsFeedViewModel
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
