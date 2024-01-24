@@ -1,3 +1,26 @@
 <resources>
-    <string name="app_name">Android Test</string>
+    <string name="app_name">ChargeMap Test</string>
+
+    <string name="settings_enable_dark_mode">Enable Dark Mode</string>
+    <string name="settings_disable_dark_mode">Disable Dark Mode</string>
+    <string name="settings_clear_data">Clear data</string>
+
+    <string name="options_access_settings">Settings</string>
+    <string name="options_show_filter">Show filters</string>
+    <string name="options_hide_filter">Hide filters</string>
+
+    <string name="filter_french_feed">French</string>
+    <string name="filter_us_feed">US</string>
+
+    <string name="empty_list_message">Sorry, we found nothing to show</string>
+
+    <string-array name="categories">
+        <item>business</item>
+        <item>entertainment</item>
+        <item>general</item>
+        <item>health</item>
+        <item>science</item>
+        <item>sports</item>
+        <item>technology</item>
+    </string-array>
 </resources>

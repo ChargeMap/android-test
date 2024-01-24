@@ -3,44 +3,40 @@ package com.example.androidtest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.activity.viewModels
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.preference.PreferenceManager
+import com.example.androidtest.ui.composables.feed.MainScreen
 import com.example.androidtest.ui.theme.AndroidTestTheme
+import com.example.androidtest.viewmodel.feed.NewsFeedViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel: NewsFeedViewModel by viewModels()
+    private lateinit var darkThemeState: MutableState<Boolean>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
-            AndroidTestTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    Greeting("Android")
-                }
+            AndroidTestTheme(darkTheme = darkThemeState.value) {
+                MainScreen(viewModel = viewModel)
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    override fun onResume() {
+        super.onResume()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AndroidTestTheme {
-        Greeting("Android")
+        checkPreferences()
+    }
+
+    private fun checkPreferences() {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this@MainActivity)
+        darkThemeState =
+            mutableStateOf(preferences.getBoolean(Constants.PREFERENCE_DARK_MODE, false))
     }
 }

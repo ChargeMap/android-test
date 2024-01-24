@@ -1,0 +1,9 @@
+0000000000000000000000000000000000000000 2c32e6c575602fe66d854a79f0e8fb473e9f4715 Guillaume Jarry <g.jarry-ext@kreactive.com> 1695040924 +0200	clone: from https://github.com/Sarumaru/android-test.git
+2c32e6c575602fe66d854a79f0e8fb473e9f4715 732ac661a55d6b0581537e4e3f89700635c6cfcb Guillaume Jarry <g.jarry-ext@kreactive.com> 1695071669 +0200	commit: Set base project:
+732ac661a55d6b0581537e4e3f89700635c6cfcb 5e2247223e99a83d6444e0bf88300c25071dbaae Guillaume Jarry <g.jarry-ext@kreactive.com> 1695089900 +0200	commit: Implement viewModel
+5e2247223e99a83d6444e0bf88300c25071dbaae 0c78a7c06acb3a1af537cdd6846bde9925f3c4f0 Guillaume Jarry <g.jarry-ext@kreactive.com> 1695118297 +0200	commit: Use Scaffold instead of Surface
+0c78a7c06acb3a1af537cdd6846bde9925f3c4f0 e858e8e016e96b8558dc12ced53c66b9a0cd9555 Guillaume Jarry <g.jarry-ext@kreactive.com> 1695140554 +0200	commit: Implement article details:
+e858e8e016e96b8558dc12ced53c66b9a0cd9555 316c7820bf536471e56bf76401d72ffcf0261aca Guillaume Jarry <g.jarry-ext@kreactive.com> 1695143863 +0200	commit: Add date formater
+316c7820bf536471e56bf76401d72ffcf0261aca a026f78d3c2303a462de8765b69abc837f1b9a8b Guillaume Jarry <g.jarry-ext@kreactive.com> 1695161166 +0200	commit: Finalize Api test
+a026f78d3c2303a462de8765b69abc837f1b9a8b 3793b248283089686838f5eb47c4caaf88e39835 Guillaume Jarry <g.jarry-ext@kreactive.com> 1695166784 +0200	commit: Reorganise code
+3793b248283089686838f5eb47c4caaf88e39835 b6c7e16194ce3688b26f06995711aa70aaeee891 Guillaume Jarry <g.jarry-ext@kreactive.com> 1695169708 +0200	commit: Add basic error handling
