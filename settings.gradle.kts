@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -12,7 +13,10 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-
-rootProject.name = "Android Test"
+rootProject.name = "AcafSxb"
 include(":app")
- 
+include(":core:designsystem")
+include(":core:network")
+include(":core:data")
+include(":core:model")
+include(":feature:planes")

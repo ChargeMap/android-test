@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="plane_balance_screen_title"> %1$s Masse et centrage</string>
+    <string name="current_mass">Masse actuelle</string>
+    <string name="remaining_mass">Masse restante</string>
+    <string name="fuel_quantity_allowed">Emport carburant possible</string>
+    <string name="balance_graph_title">Graphique de centrage</string>
+    <string name="fuel_quantity">%d l</string>
+    <string name="mass_quantity">%d kg</string>
+    <string name="full_fuel">Plein Complet</string>
+
+</resources>

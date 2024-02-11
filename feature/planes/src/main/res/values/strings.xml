@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="plane_toolbar_title">Nos Avions</string>
+    <string name="plane_bottom_nav_title">Nos Avions</string>
+    <string name="mass_and_balance_action_title">Masse &amp; centrage</string>
+
+</resources>
