@@ -33,7 +33,7 @@ class NinjaDataSourceNetwork @Inject constructor(
     ): NetworkAirplane? = withContext(Dispatchers.IO) {
         client.get {
             url {
-                parameters.append("manufacturer ", manufacturer)
+                parameters.append("manufacturer", manufacturer)
                 parameters.append("model", model)
             }
         }.body<List<NetworkAirplane>>().firstOrNull()
