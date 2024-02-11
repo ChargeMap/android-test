@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="plane_toolbar_title">Avions</string>
+
+    <string name="plane_detail_manufacturer_title">Constructeur</string>
+    <string name="plane_detail_model_title">Model</string>
+    <string name="plane_detail_engine_title">Type de moteur</string>
+    <string name="plane_detail_engine_power_title">Puissance moteur</string>
+    <string name="plane_detail_vmax_title">Vitesse maximale</string>
+    <string name="plane_detail_plafond_max_title">Plafond de croissière</string>
+    <string name="plane_detail_masse_vide_title">Masse à vide</string>
+
+
+    <string name="ft_unit">ft</string>
+    <string name="power_unit">lb/ft</string>
+    <string name="weight_unit">lbs</string>
+    <string name="speed_limit">knots</string>
+
+
+
+</resources>
