@@ -25,7 +25,8 @@ internal class PlanesViewModel @Inject constructor(
 
     val planesByCategoryState: StateFlow<PlaneUi> = useCase().map {
         it.toUiModel()
-    }.asUiState().stateIn(
+    }.asUiState()
+        .stateIn(
         scope = viewModelScope,
         started = SharingStarted.WhileSubscribed(5_000),
         initialValue = UiState.Loading

@@ -22,7 +22,6 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                     testInstrumentationRunner =
                         "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
                 }
-
             }
 
             val libs = extensions.getByType<VersionCatalogsExtension>().named("libs")
@@ -46,6 +45,9 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
                 add("androidTestImplementation", libs.findLibrary("androidx.test.rules").get())
                 add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
                 add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
+                add("testImplementation", libs.findLibrary("mockk").get())
+                add("androidTestImplementation", libs.findLibrary("mockk-instrumental").get())
+                add("testImplementation", project(":core:data"))
             }
         }
     }

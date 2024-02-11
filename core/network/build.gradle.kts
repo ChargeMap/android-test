@@ -15,7 +15,6 @@ dependencies {
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.json)
-    implementation(libs.simple.xml)
     testImplementation(libs.ktor.client.mock)
     debugImplementation(libs.chucker.interceptor.debug)
     releaseImplementation(libs.chucker.interceptor.release)

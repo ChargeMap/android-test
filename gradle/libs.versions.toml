@@ -28,18 +28,12 @@ kotlin = "1.9.10"
 kotlinxCoroutines = "1.7.3"
 kotlinxDatetime = "0.4.0"
 kotlinxSerializationJson = "1.4.1"
-ksp = "1.7.20-1.0.8"
-lint = "30.3.1"
-okhttp = "4.10.0"
-room = "2.5.0-beta01"
-secrets = "2.0.1"
-turbine = "0.12.1"
 lottie = "5.2.0"
 ktor = "2.1.2"
 chucker = "3.5.2"
-simpleXml = "2.7.1"
 org-jetbrains-kotlin-android = "1.9.10"
 junit = "1.1.5"
+mockk = "1.13.9"
 
 [libraries]
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidxActivity" }
@@ -100,7 +94,9 @@ ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref =
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
 chucker-interceptor-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
 chucker-interceptor-release = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
-simple-xml = { group = "org.simpleframework", name = "simple-xml", version.ref = "simpleXml" }
+mockk = {group = "io.mockk", name = "mockk-android", version.ref ="mockk"}
+mockk-instrumental = {group = "io.mockk", name = "mockk-agent", version.ref ="mockk"}
+
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

@@ -7,7 +7,7 @@ import com.shindra.acafsxb.core.network.sources.NinjaDataSource
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-class NinjaRepository @Inject constructor(private val client: NinjaDataSource) {
+open class NinjaRepository @Inject constructor(private val client: NinjaDataSource) {
 
     fun planesByEngineType(type: String): Flow<List<ModelAirplane>> = flowAndEmit {
         client.planeByEngineType(type).map {
