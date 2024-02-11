@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.LineWeight
 import androidx.compose.material.icons.outlined.Scale
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SuggestionChip
@@ -30,148 +31,56 @@ import com.shindra.acafsxb.core.designsystem.theme.AcafSxbTheme
 
 private typealias Registration = String
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PlaneCard(
-    registration: String,
-    hourlyCost: String,
+    manufacturer: String,
+    model: String,
     imageUrl: String,
-    manufacturerAndType: String,
-    minOilQuantityBadge: String,
-    nbOfSeats: Int,
-    mtow: String,
     onClick: (Registration) -> Unit
 ) {
 
-    Card() {
-        CoilNetworkImage(
+    Card(onClick = { onClick("") }) {
+      /*  CoilNetworkImage(
             url = imageUrl,
             modifier = Modifier
-                .height(350.dp)
+                .height(150.dp)
                 .fillMaxWidth()
                 .padding(bottom = 8.dp),
             contentScale = ContentScale.Crop,
             shape = MaterialTheme.shapes.medium
-        )
+        )*/
 
         PlaneBanner(
             modifier = Modifier
                 .padding(horizontal = 8.dp)
                 .padding(bottom = 8.dp),
-            registration = registration,
-            hourlyCost = hourlyCost,
-            manufacturerAndType = manufacturerAndType
+            manufacturer = manufacturer,
+            model = model
         )
 
-        PlaneButton(
-            onClick = { onClick(registration) },
-            modifier = Modifier
-                .padding(horizontal = 8.dp)
-                .padding(bottom = 8.dp)
-        )
-    }
-}
-
-@Composable
-private fun PlaneCardLoading() {
-    Card(
-        modifier = Modifier
-            .height(400.dp)
-            .fillMaxWidth()
-    ) {
-        ShimmerSurface(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-        )
     }
 }
 
 @Composable
 private fun PlaneBanner(
     modifier: Modifier = Modifier,
-    registration: String,
-    hourlyCost: String,
-    manufacturerAndType: String
+    manufacturer: String,
+    model: String
 ) {
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    Column(
+        modifier = modifier.fillMaxWidth()
     ) {
-        Column {
-            Text(
-                text = registration,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = manufacturerAndType,
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
 
-        Text(text = hourlyCost,
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold)
-    }
-}
-
-@Composable
-private fun PlaneSuggestionChips(
-    nbOfSeats: Int,
-    minOilQuantity: String,
-    maxMass: String,
-    modifier: Modifier = Modifier
-) {
-    val sModifier = Modifier.padding(end = 8.dp)
-
-    Row(modifier = modifier.fillMaxWidth()) {
-        SuggestionChip(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.ChairAlt,
-                    contentDescription = null
-                )
-            },
-            onClick = {  },
-            label = { Text(text = nbOfSeats.toString()) },
-            modifier = sModifier
+        Text(
+            text = manufacturer,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold
         )
-
-        SuggestionChip(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.Scale,
-                    contentDescription = null
-                )
-            },
-            onClick = {  },
-            label = { Text(text = maxMass) },
-            modifier = sModifier
+        Text(
+            text = model,
+            style = MaterialTheme.typography.bodySmall
         )
-
-        SuggestionChip(
-            icon = {
-                Icon(
-                    imageVector = Icons.Default.OilBarrel,
-                    contentDescription = null
-                )
-            },
-            onClick = {  },
-            label = { Text(minOilQuantity) },
-            modifier = sModifier
-        )
-    }
-}
-
-@Composable
-private fun PlaneButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
-    Row(
-        modifier = modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End
-    ) {
-        Button(onClick = { onClick() }) {
-            Text(text = stringResource(id = R.string.mass_and_balance_action_title))
-        }
     }
 }
 
@@ -181,15 +90,10 @@ private fun PlaneCardLightPreview() {
     AcafSxbTheme {
         Column {
             PlaneCard(
-                registration = "F-GBQG",
-                hourlyCost = "134 €/h",
+                manufacturer = "Airbus",
+                model = "A320",
                 imageUrl = "",
-                onClick = {},
-                manufacturerAndType = "Cessena 152",
-                nbOfSeats = 4,
-                minOilQuantityBadge = "min 7 USqt",
-                mtow = "758 kg"
-
+                onClick = {}
             )
         }
     }
@@ -201,14 +105,10 @@ private fun PlaneCardDarkPreview() {
     AcafSxbTheme {
         Column {
             PlaneCard(
-                registration = "F-GBQG",
-                hourlyCost = "134 €/h",
+                manufacturer = "Airbus",
+                model = "A350",
                 imageUrl = "",
                 onClick = {},
-                manufacturerAndType = "Cessena 152",
-                nbOfSeats = 4,
-                minOilQuantityBadge = "min 7 USqt",
-                mtow = "758 kg"
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.shindra.acafsxb.feature.planes
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,6 +14,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.shindra.acafsxb.core.designsystem.components.UiStateContent
 import com.shindra.acafsxb.feature.planes.compose.PlaneCard
+import com.shindra.acafsxb.feature.planes.compose.PlaneHeader
 
 @Composable
 internal fun PlanesScreenRoute(
@@ -21,7 +23,7 @@ internal fun PlanesScreenRoute(
     viewModel: PlanesViewModel = hiltViewModel()
 ) {
 
-    val planesUiState by viewModel.planeUiState.collectAsStateWithLifecycle()
+    val planesUiState by viewModel.planesByCategoryState.collectAsStateWithLifecycle()
 
     val title = stringResource(id = R.string.plane_toolbar_title)
     LaunchedEffect(key1 = title) {
@@ -29,32 +31,35 @@ internal fun PlanesScreenRoute(
     }
 
     PlanesScreen(
-        planes = planesUiState,
+        planesByCategory = planesUiState,
         onMassAndBalanceClick = onMassAndBalanceClick
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 internal fun PlanesScreen(
-    planes: PlaneInfoState,
+    planesByCategory: PlaneUi,
     onMassAndBalanceClick: (String) -> Unit
 ) {
-    UiStateContent(state = planes) {
+    UiStateContent(state = planesByCategory) { pC ->
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(it) {
-                PlaneCard(
-                    registration = it.manufacturer,
-                    hourlyCost = "",
-                    imageUrl = "it.imageUrl",
-                    manufacturerAndType = "it.modelAndManufacturer",
-                    onClick = onMassAndBalanceClick,
-                    mtow = "it.mtow",
-                    nbOfSeats = 4,
-                    minOilQuantityBadge = "it.minOilQuantity"
-                )
+
+            pC.forEach {
+                stickyHeader {
+                    PlaneHeader(it.title)
+                }
+                items(it.items) {
+                    PlaneCard(
+                        manufacturer = it.manufacturer,
+                        model = it.model,
+                        imageUrl = "",
+                        onClick = {}
+                    )
+                }
             }
         }
     }

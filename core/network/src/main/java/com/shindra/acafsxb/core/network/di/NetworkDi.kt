@@ -25,7 +25,7 @@ import javax.inject.Singleton
 interface DataSourceModule {
     @Binds
     fun bindsAcafsxbNetwork(
-        acafsxbNetwork: NinjaDataSourceNetowrk
+        acafsxbNetwork: NinjaDataSourceNetwork
     ): NinjaDataSource
 
 }

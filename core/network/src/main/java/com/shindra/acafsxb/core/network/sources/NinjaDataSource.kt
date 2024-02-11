@@ -12,7 +12,7 @@ interface NinjaDataSource {
     suspend fun planeByEngineType(type : String): List<NetworkAirplane>
 }
 
-class NinjaDataSourceNetowrk @Inject constructor(
+class NinjaDataSourceNetwork @Inject constructor(
     private val client: HttpClient
 ) : NinjaDataSource {
 
