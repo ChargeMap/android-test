@@ -22,3 +22,4 @@ class ExampleInstrumentedTest {
         assertEquals("com.shindra.acafsxb.feature.planes.test", appContext.packageName)
     }
 }
+

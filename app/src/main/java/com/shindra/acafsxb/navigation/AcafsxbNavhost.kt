@@ -4,7 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import com.shindra.acafsxb.core.designsystem.components.BottomComponent
+import com.shindra.acafsxb.feature.planedetails.navigation.navigateToPlaneDetails
+import com.shindra.acafsxb.feature.planedetails.navigation.planeDetails
 import com.shindra.acafsxb.feature.planes.navigation.planesScreen
 import com.shindra.acafsxb.feature.planes.navigation.planesScreenRouteId
 
@@ -14,8 +15,7 @@ fun AcafsxbNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     startDestination: String = planesScreenRouteId,
-    onTitleChange: (String) -> Unit,
-    onBottomComponent: (BottomComponent) -> Unit,
+    onTitleChange: (String) -> Unit
 ) {
     NavHost(
         navController = navController,
@@ -24,8 +24,14 @@ fun AcafsxbNavHost(
     ) {
         planesScreen(
             onTitleChange = onTitleChange,
-            onMassAndBalanceClick = { /*navController.navigateToPlanesBalanceFeature(it)*/ }
+            onMassAndBalanceClick = { manufacturer, model ->
+                navController.navigateToPlaneDetails(
+                    manufacturer = manufacturer,
+                    model = model
+                )
+            }
         )
 
+        planeDetails(onTitleChange)
     }
 }

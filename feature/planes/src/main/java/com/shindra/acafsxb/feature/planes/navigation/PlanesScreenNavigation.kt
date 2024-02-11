@@ -4,6 +4,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import com.shindra.acafsxb.feature.planes.OnPlaneClick
 import com.shindra.acafsxb.feature.planes.PlanesScreenRoute
 
 const val planesScreenRouteId = "planes_screen_route"
@@ -14,14 +15,14 @@ fun NavController.navigateToPlanesFeature(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.planesScreen(
     onTitleChange: (String) -> Unit,
-    onMassAndBalanceClick: (String) -> Unit,
+    onMassAndBalanceClick: OnPlaneClick,
 ) {
     composable(
         route = planesScreenRouteId
     ) {
         PlanesScreenRoute(
             onTitleChange = onTitleChange,
-            onMassAndBalanceClick = onMassAndBalanceClick
+            onPlaneClick = onMassAndBalanceClick
         )
     }
 }

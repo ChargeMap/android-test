@@ -9,4 +9,10 @@ internal interface SectionType {
 }
 
 
-internal data class ListModel(@StringRes val title: Int, val items : List<ModelAirplane>)
+internal data class ListModel(@StringRes val title: Int, val items: List<UiAirplane>)
+
+internal data class UiAirplane(
+    val url: String,
+    val model: String,
+    val manufacturer: String
+)

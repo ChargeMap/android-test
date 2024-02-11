@@ -16,10 +16,12 @@ import com.shindra.acafsxb.core.designsystem.components.UiStateContent
 import com.shindra.acafsxb.feature.planes.compose.PlaneCard
 import com.shindra.acafsxb.feature.planes.compose.PlaneHeader
 
+typealias OnPlaneClick = (manufacturer: String, model: String) -> Unit
+
 @Composable
 internal fun PlanesScreenRoute(
     onTitleChange: (String) -> Unit,
-    onMassAndBalanceClick: (String) -> Unit,
+    onPlaneClick: OnPlaneClick,
     viewModel: PlanesViewModel = hiltViewModel()
 ) {
 
@@ -32,7 +34,7 @@ internal fun PlanesScreenRoute(
 
     PlanesScreen(
         planesByCategory = planesUiState,
-        onMassAndBalanceClick = onMassAndBalanceClick
+        onPlaneClick = onPlaneClick
     )
 }
 
@@ -40,7 +42,7 @@ internal fun PlanesScreenRoute(
 @Composable
 internal fun PlanesScreen(
     planesByCategory: PlaneUi,
-    onMassAndBalanceClick: (String) -> Unit
+    onPlaneClick: OnPlaneClick
 ) {
     UiStateContent(state = planesByCategory) { pC ->
         LazyColumn(
@@ -56,8 +58,10 @@ internal fun PlanesScreen(
                     PlaneCard(
                         manufacturer = it.manufacturer,
                         model = it.model,
-                        imageUrl = "",
-                        onClick = {}
+                        imageUrl = it.url,
+                        onClick = {
+                            onPlaneClick(it.manufacturer, it.model)
+                        }
                     )
                 }
             }

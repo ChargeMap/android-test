@@ -9,20 +9,33 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 interface NinjaDataSource {
-    suspend fun planeByEngineType(type : String): List<NetworkAirplane>
+    suspend fun planeByEngineType(type: String): List<NetworkAirplane>
+    suspend fun planeByManufacturerAndModel(manufacturer: String, model: String): NetworkAirplane?
 }
 
 class NinjaDataSourceNetwork @Inject constructor(
     private val client: HttpClient
 ) : NinjaDataSource {
 
-    override suspend fun planeByEngineType(type : String): List<NetworkAirplane> = withContext(Dispatchers.IO) {
+    override suspend fun planeByEngineType(type: String): List<NetworkAirplane> =
+        withContext(Dispatchers.IO) {
+            client.get {
+                url {
+                    parameters.append("engine_type", type)
+                    parameters.append("limit", "30")
+                }
+            }.body()
+        }
+
+    override suspend fun planeByManufacturerAndModel(
+        manufacturer: String,
+        model: String
+    ): NetworkAirplane? = withContext(Dispatchers.IO) {
         client.get {
             url {
-                parameters.append("engine_type", type)
-                parameters.append("limit", "30")
+                parameters.append("manufacturer ", manufacturer)
+                parameters.append("model", model)
             }
-        }.body()
+        }.body<List<NetworkAirplane>>().firstOrNull()
     }
-
 }

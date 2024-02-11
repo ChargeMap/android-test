@@ -18,6 +18,10 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
                 defaultConfig.targetSdk = 33
+                defaultConfig {
+                    testInstrumentationRunner =
+                        "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
+                }
 
             }
 
@@ -33,6 +37,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
 
             dependencies {
                 add("testImplementation", libs.findLibrary("junit4").get())
+                add("androidTestImplementation", libs.findLibrary("androidx.test.core").get())
+                add(
+                    "androidTestImplementation",
+                    libs.findLibrary("androidx.test.espresso.core").get()
+                )
+                add("androidTestImplementation", libs.findLibrary("androidx.test.runner").get())
+                add("androidTestImplementation", libs.findLibrary("androidx.test.rules").get())
+                add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
+                add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
             }
         }
     }

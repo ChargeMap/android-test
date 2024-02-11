@@ -2,11 +2,9 @@ package com.shindra.acafsxb.core.designsystem.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,43 +17,78 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun KeyValue(
+fun KeyValueUnit(
     key: String,
     value: String,
+    unit: String?,
     modifier: Modifier = Modifier,
     keyTextConfig: TextConfig = KeyValueTextConfig.defaultText(),
-    valueTextConfig: TextConfig = KeyValueTextConfig.defaultText()
+    valueTextConfig: TextConfig = KeyValueTextConfig.defaultText(),
+    unitTextConfig: TextConfig = KeyValueTextConfig.defaultText()
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = key,
-            color = keyTextConfig.color,
-            fontSize = keyTextConfig.fontSize,
-            fontWeight = keyTextConfig.fontWeight,
-            fontFamily = keyTextConfig.fontFamily,
-            modifier = Modifier.padding(end = 4.dp)
-        )
-        Text(
-            text = value,
-            color = valueTextConfig.color,
-            fontSize = valueTextConfig.fontSize,
-            fontWeight = valueTextConfig.fontWeight,
-            fontFamily = valueTextConfig.fontFamily,
-            modifier = Modifier.padding(start = 4.dp)
-        )
+        with(keyTextConfig) {
+            Text(
+                text = key,
+                color = color,
+                fontSize = fontSize,
+                fontWeight = fontWeight,
+                fontFamily = fontFamily,
+                modifier = Modifier.padding(end = 4.dp)
+            )
+        }
+
+        Row {
+            with(valueTextConfig) {
+                Text(
+                    text = value,
+                    color = color,
+                    fontSize = fontSize,
+                    fontWeight = fontWeight,
+                    fontFamily = fontFamily,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+            }
+
+            if (unit == null) return
+
+            with(unitTextConfig) {
+                Text(
+                    text = unit,
+                    color = color,
+                    fontSize = fontSize,
+                    fontWeight = fontWeight,
+                    fontFamily = fontFamily,
+                    modifier = Modifier.padding(end = 4.dp)
+                )
+            }
+        }
+
     }
 }
 
 
 @Preview(showBackground = true)
 @Composable
-fun KeyValuePreview() {
-    KeyValue(
+fun KeyValueLightPreview() {
+    KeyValueUnit(
         key = "Clef",
-        value = "Valeur"
+        value = "Valeur",
+        "Unit"
+    )
+}
+
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KeyValueDarkPreview() {
+    KeyValueUnit(
+        key = "Clef",
+        value = "Valeur",
+        "Unit"
     )
 }
 
@@ -82,27 +115,3 @@ data class TextConfig internal constructor(
     val fontWeight: FontWeight?,
     val fontFamily: FontFamily?,
 )
-
-@Preview(
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    showBackground = true
-)
-@Composable
-fun KeyValueDarkPreview() {
-    Column {
-        KeyValue(
-            key = "Clef",
-            value = "Valeur"
-        )
-
-        Card {
-            KeyValue(
-                key = "Clef",
-                value = "Valeur"
-            )
-        }
-
-    }
-
-
-}

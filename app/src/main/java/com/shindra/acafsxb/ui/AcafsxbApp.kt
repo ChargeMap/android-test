@@ -17,7 +17,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.shindra.acafsxb.R
-import com.shindra.acafsxb.core.designsystem.components.BottomComponent
 import com.shindra.acafsxb.navigation.AcafsxbNavHost
 
 @OptIn(
@@ -28,7 +27,6 @@ fun AcafsxbApp(
     appState: AcafsxbAppState = rememberAcafsxbAppState()
 ) {
     var toolbarTitle by remember { mutableStateOf("") }
-    var bottomComponent by remember { mutableStateOf<BottomComponent?>(null) }
 
     Scaffold(
         topBar = {
@@ -45,8 +43,7 @@ fun AcafsxbApp(
             navController = appState.navController,
             onTitleChange = { newTitle ->
                 toolbarTitle = newTitle
-            },
-            onBottomComponent = { bottomComponent = it }
+            }
         )
     }
 }

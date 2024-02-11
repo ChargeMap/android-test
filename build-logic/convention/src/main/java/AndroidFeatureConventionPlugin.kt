@@ -31,8 +31,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
             }
             extensions.configure<LibraryExtension> {
                 defaultConfig {
-                  /*  testInstrumentationRunner =
-                        "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"*/
+                    testInstrumentationRunner =
+                        "com.google.samples.apps.nowinandroid.core.testing.NiaTestRunner"
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.chargemap.core.domain.di
 
+import com.chargemap.core.domain.usecases.PlaneDetailsUseCase
 import com.chargemap.core.domain.usecases.PlaneUseCase
 import com.shindra.acafsxb.core.data.repositories.NinjaRepository
 import dagger.Module
@@ -15,5 +16,9 @@ object DomainDiModule {
     @Provides
     @Singleton
     fun providePlaneUsesCase(repository: NinjaRepository) = PlaneUseCase(repository)
+
+    @Provides
+    @Singleton
+    fun providePlaneDetailsUsesCase(repository: NinjaRepository) = PlaneDetailsUseCase(repository)
 
 }

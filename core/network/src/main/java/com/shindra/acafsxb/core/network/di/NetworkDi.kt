@@ -2,7 +2,7 @@ package com.shindra.acafsxb.core.network.di
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.shindra.acafsxb.core.network.R
+import com.shindra.acafsxb.core.network.HttpClientFactory
 import com.shindra.acafsxb.core.network.sources.*
 import dagger.Binds
 import dagger.Module
@@ -24,7 +24,7 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 interface DataSourceModule {
     @Binds
-    fun bindsAcafsxbNetwork(
+    fun bindNinjaDataSource(
         acafsxbNetwork: NinjaDataSourceNetwork
     ): NinjaDataSource
 
@@ -47,24 +47,10 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAcafsxbHttpClient(
-        @ApplicationContext context: Context,
         chuckerInterceptor: ChuckerInterceptor,
         json: Json
-    ): HttpClient {
-        return HttpClient(OkHttp) {
-            engine {
-                addInterceptor(chuckerInterceptor)
-            }
-            install(ContentNegotiation) {
-                json(json)
-            }
-            defaultRequest {
-                url {
-                    host = context.getString(R.string.acafsxb_api_url)
-                    protocol = URLProtocol.HTTPS
-                }
-                headers.append("X-Api-Key", "HmRVesSiuT4RSHic4u+KPg==TttcNlfX2Yo3YYBL")
-            }
-        }
+    ) = HttpClientFactory(engine = OkHttp, json = json) {
+        addInterceptor(chuckerInterceptor)
     }
+
 }
