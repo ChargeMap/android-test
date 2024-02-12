@@ -26,8 +26,8 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             pluginManager.apply {
-                apply("acafsxb.library")
-                apply("acafsxb.hilt")
+                apply("shindra.library")
+                apply("shindra.hilt")
             }
             extensions.configure<LibraryExtension> {
                 defaultConfig {

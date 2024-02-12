@@ -1,11 +1,11 @@
 plugins {
-    id("acafsxb.library")
-    id("acafsxb.hilt")
+    id("shindra.library")
+    id("shindra.hilt")
     id("kotlinx-serialization")
 }
 
 android {
-    namespace = "com.shindra.acafsxb.core.network"
+    namespace = "com.shindra.chargemap.core.network"
 }
 
 dependencies {

@@ -1,11 +1,11 @@
 plugins {
-    id("acafsxb.library")
-    id("acafsxb.hilt")
+    id("shindra.library")
+    id("shindra.hilt")
     id("kotlinx-serialization")
 }
 
 android {
-    namespace = "com.shindra.acafsxb.core.data"
+    namespace = "com.shindra.chargemap.core.data"
 }
 
 dependencies {
@@ -18,5 +18,4 @@ dependencies {
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization.json)
-
 }

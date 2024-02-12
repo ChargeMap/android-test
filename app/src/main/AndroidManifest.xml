@@ -12,13 +12,13 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AcafSxb"
-        android:name=".AcafsxbApplication"
+        android:theme="@style/Theme.ChargeMap"
+        android:name=".ChargeMapApplication"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.AcafSxb">
+            android:theme="@style/Theme.ChargeMap">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

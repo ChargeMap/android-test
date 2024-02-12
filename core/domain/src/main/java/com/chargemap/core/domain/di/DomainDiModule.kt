@@ -2,7 +2,7 @@ package com.chargemap.core.domain.di
 
 import com.chargemap.core.domain.usecases.PlaneDetailsUseCase
 import com.chargemap.core.domain.usecases.PlaneUseCase
-import com.shindra.acafsxb.core.data.repositories.NinjaRepository
+import com.shindra.chargemap.core.data.repositories.NinjaRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

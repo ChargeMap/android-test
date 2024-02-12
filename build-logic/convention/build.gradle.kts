@@ -2,7 +2,7 @@ plugins {
     `kotlin-dsl`
 }
 
-group = "com.shindra.acafsxb.buildlogic"
+group = "com.shindra.buildlogic"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -17,27 +17,27 @@ dependencies {
 gradlePlugin {
     plugins {
         register("androidApplicationCompose") {
-            id = "acafsxb.application.compose"
+            id = "shindra.application.compose"
             implementationClass = "AndroidApplicationComposeConventionPlugin"
         }
         register("androidApplication") {
-            id = "acafsxb.application"
+            id = "shindra.application"
             implementationClass = "AndroidApplicationConventionPlugin"
         }
         register("androidLibraryCompose") {
-            id = "acafsxb.library.compose"
+            id = "shindra.library.compose"
             implementationClass = "AndroidLibraryComposeConventionPlugin"
         }
         register("androidLibrary") {
-            id = "acafsxb.library"
+            id = "shindra.library"
             implementationClass = "AndroidLibraryConventionPlugin"
         }
         register("androidFeature") {
-            id = "acafsxb.feature"
+            id = "shindra.feature"
             implementationClass = "AndroidFeatureConventionPlugin"
         }
         register("androidHilt") {
-            id = "acafsxb.hilt"
+            id = "shindra.hilt"
             implementationClass = "AndroidHiltConventionPlugin"
         }
     }

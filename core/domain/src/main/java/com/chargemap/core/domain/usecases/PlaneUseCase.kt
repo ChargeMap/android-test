@@ -1,7 +1,7 @@
 package com.chargemap.core.domain.usecases
 
-import com.shindra.acafsxb.core.data.repositories.NinjaRepository
-import com.shindra.acafsxb.core.model.ModelAirplane
+import com.shindra.chargemap.core.data.repositories.NinjaRepository
+import com.shindra.chargemap.core.model.ModelAirplane
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject

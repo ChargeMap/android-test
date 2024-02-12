@@ -14,7 +14,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AcafSxb"
+rootProject.name = "ChargeMap"
 
 include(":app")
 include(":core:designsystem")

@@ -1,16 +1,16 @@
 plugins {
-    id("acafsxb.application")
-    id("acafsxb.application.compose")
-    id("acafsxb.hilt")
+    id("shindra.application")
+    id("shindra.application.compose")
+    id("shindra.hilt")
 }
 
 
 android {
-    namespace = "com.shindra.acafsxb"
+    namespace = "com.shindra.chargemap"
 
 
     defaultConfig {
-        applicationId = "com.shindra.acafsxb"
+        applicationId = "com.shindra.chargemap"
         versionCode = 1
         versionName = "1.0.0"
 

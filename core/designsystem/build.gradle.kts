@@ -1,6 +1,6 @@
 plugins {
-    id("acafsxb.library")
-    id("acafsxb.library.compose")
+    id("shindra.library")
+    id("shindra.library.compose")
 }
 
 android {
@@ -10,7 +10,7 @@ android {
     lint {
         checkDependencies = true
     }
-    namespace = "com.shindra.acafsxb.core.designsystem"
+    namespace = "com.shindra.chargemap.core.designsystem"
 }
 
 
@@ -25,6 +25,4 @@ dependencies {
     api(libs.androidx.compose.ui.util)
     api(libs.androidx.compose.runtime)
     implementation(libs.coil.kt.compose)
- /*   lintPublish(project(":lint"))
-    androidTestImplementation(project(":core:testing"))*/
 }

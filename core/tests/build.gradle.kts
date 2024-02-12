@@ -1,5 +1,5 @@
 plugins {
-    id("acafsxb.library")
+    id("shindra.library")
 }
 
 android {

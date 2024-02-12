@@ -1,9 +1,9 @@
 plugins {
-    id("acafsxb.feature")
-    id("acafsxb.library.compose")
+    id("shindra.feature")
+    id("shindra.library.compose")
 }
 
 android {
-    namespace = "com.shindra.acafsxb.feature.planedetails"
+    namespace = "com.shindra.chargemap.feature.planedetails"
 }
 
