@@ -1,4 +1,4 @@
-package com.shindra.acafsxb.feature.planedetails
+package com.shindra.chargemap.core.tests
 
 import org.junit.Test
 

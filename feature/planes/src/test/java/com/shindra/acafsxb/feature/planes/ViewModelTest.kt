@@ -3,68 +3,56 @@ package com.shindra.acafsxb.feature.planes
 import com.chargemap.core.domain.usecases.PlaneCategory
 import com.chargemap.core.domain.usecases.PlaneCategoryType
 import com.chargemap.core.domain.usecases.PlaneUseCase
-import com.shindra.acafsxb.core.data.repositories.NinjaRepository
 import com.shindra.acafsxb.core.designsystem.components.UiState
-import com.shindra.acafsxb.core.model.ModelAirplane
-import com.shindra.acafsxb.feature.planes.bo.SectionType
+import com.shindra.acafsxb.feature.planes.bo.ListModel
+import com.shindra.chargemap.core.tests.MainDispatcherRule
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
-import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import kotlin.time.Duration.Companion.seconds
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
 class ViewModelTest {
 
-    private lateinit var vm: PlanesViewModel
-    private lateinit var mockedUc: NinjaRepository
-    private lateinit var testRepository: FakeRepository
-
-    @Before
-    fun before() {
-        testRepository = FakeRepository()
-        mockedUc = mockk(relaxed = true)
-        vm = PlanesViewModel(PlaneUseCase(mockedUc))
-    }
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule(UnconfinedTestDispatcher())
+    private var mockedUc: PlaneUseCase = mockk<PlaneUseCase>()
 
     @Test
-    fun `test nominal`() = runTest {
-        every { mockedUc.planesByEngineType(any()) } returns testRepository.modelAirplane()
+    fun `success`() = runTest {
+        every { mockedUc.invoke() } returns flowOf(
+            listOf(
+                PlaneCategory(
+                    category = PlaneCategoryType.Jet,
+                    planes = emptyList()
+                )
+            )
+        )
 
-        val j = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
+        val vm = PlanesViewModel(mockedUc)
+
+        val j = launch() {
             vm.planesByCategoryState.collect()
         }
 
+
         assert(vm.planesByCategoryState.value is UiState.Loading)
+        delay(2.seconds)
+        assert(vm.planesByCategoryState.value is UiState.Success)
 
-        testRepository.emit(listOf(ModelAirplane(manufacturer = "Boeing", model = "A350")))
+        val value = vm.planesByCategoryState.value
 
-        println((vm.planesByCategoryState.value))
+        if(value is UiState.Success<List<ListModel>>){
+            assert(value.value.size == 1)
+            assert(value.value.first().title == R.string.plane_jet_category_title)
+        }
 
         j.cancel()
-
     }
-}
-
-
-class FakeRepository() {
-    val flow = MutableSharedFlow<List<ModelAirplane>>()
-    suspend fun emit(value: List<ModelAirplane>) = flow.emit(value)
-
-    fun modelAirplane(): Flow<List<ModelAirplane>> = flow
 }

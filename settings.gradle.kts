@@ -13,7 +13,9 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "AcafSxb"
+
 include(":app")
 include(":core:designsystem")
 include(":core:network")
@@ -22,3 +24,4 @@ include(":core:model")
 include(":feature:planes")
 include(":core:domain")
 include(":feature:planeDetails")
+include(":core:tests")

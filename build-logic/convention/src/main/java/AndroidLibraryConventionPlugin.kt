@@ -35,19 +35,15 @@ class AndroidLibraryConventionPlugin : Plugin<Project> {
             }
 
             dependencies {
-                add("testImplementation", libs.findLibrary("junit4").get())
-                add("androidTestImplementation", libs.findLibrary("androidx.test.core").get())
-                add(
-                    "androidTestImplementation",
-                    libs.findLibrary("androidx.test.espresso.core").get()
-                )
-                add("androidTestImplementation", libs.findLibrary("androidx.test.runner").get())
-                add("androidTestImplementation", libs.findLibrary("androidx.test.rules").get())
-                add("testImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
-                add("androidTestImplementation", libs.findLibrary("kotlinx-coroutines-test").get())
-                add("testImplementation", libs.findLibrary("mockk").get())
-                add("androidTestImplementation", libs.findLibrary("mockk-instrumental").get())
-                add("testImplementation", project(":core:data"))
+
+                "androidTestImplementation"(libs.findLibrary("androidx.test.core").get())
+                "androidTestImplementation"(libs.findLibrary("androidx.test.espresso.core").get())
+
+                "androidTestImplementation"(libs.findLibrary("androidx.test.runner").get())
+                "androidTestImplementation"(libs.findLibrary("androidx.test.rules").get())
+
+                "testImplementation"(project(":core:tests"))
+                "androidTestImplementation"(project(":core:tests"))
             }
         }
     }

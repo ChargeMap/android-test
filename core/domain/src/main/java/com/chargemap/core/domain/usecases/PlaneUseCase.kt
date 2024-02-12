@@ -14,9 +14,9 @@ sealed interface PlaneCategoryType {
     data object PropJet : PlaneCategoryType
 }
 
-open class PlaneUseCase @Inject constructor(private val ninjaRepository: NinjaRepository) {
+class PlaneUseCase @Inject constructor(private val ninjaRepository: NinjaRepository) {
 
-   open operator fun invoke(): Flow<List<PlaneCategory>> {
+    operator fun invoke(): Flow<List<PlaneCategory>> {
         val jetFlow = ninjaRepository.planesByEngineType("jet")
         val pistonFlow = ninjaRepository.planesByEngineType("piston")
         val propFlow = ninjaRepository.planesByEngineType("propjet")

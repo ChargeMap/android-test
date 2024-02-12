@@ -23,14 +23,16 @@ internal class PlanesViewModel @Inject constructor(
     useCase: PlaneUseCase
 ) : ViewModel() {
 
-    val planesByCategoryState: StateFlow<PlaneUi> = useCase().map {
-        it.toUiModel()
-    }.asUiState()
+    val planesByCategoryState: StateFlow<PlaneUi> = useCase()
+        .map {
+            it.toUiModel()
+        }
+        .asUiState()
         .stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = UiState.Loading
-    )
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = UiState.Loading
+        )
 }
 
 private fun List<PlaneCategory>.toUiModel(): List<ListModel> {

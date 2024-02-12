@@ -24,7 +24,7 @@ fun <T> UiStateContent(
 sealed interface UiState<out T> {
     data class Success<T>(val value: T) : UiState<T>
     data class Error(val throwable: Throwable) : UiState<Nothing>
-    object Loading : UiState<Nothing>
+    data object Loading : UiState<Nothing>
 }
 
 fun <T> Flow<T>.asUiState(): Flow<UiState<T>> {
