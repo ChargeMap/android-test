@@ -11,6 +11,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.shindra.chargemap.core.designsystem.components.FullScreenErrorScreen
 import com.shindra.chargemap.core.designsystem.components.KeyValueTextConfig
 import com.shindra.chargemap.core.designsystem.components.KeyValueUnit
 import com.shindra.chargemap.core.designsystem.components.UiStateContent
@@ -29,15 +30,22 @@ internal fun PlaneDetailScreenRoute(
         onTitleChange("$manufacturer $model")
     }
 
-    PlaneDetailScreen(planesUiState)
+    PlaneDetailScreen(
+        planeDetail = planesUiState,
+        onRetry = { viewModel.planeDetails() }
+    )
 }
 
 
 @Composable
 private fun PlaneDetailScreen(
-    planeDetail: PlaneDetailUiState
+    planeDetail: PlaneDetailUiState,
+    onRetry: () -> Unit
 ) {
-    UiStateContent(state = planeDetail) {
+    UiStateContent(
+        onError = { FullScreenErrorScreen(onRetry) },
+        state = planeDetail
+    ) {
         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
             it.forEach { d ->
                 KeyValueUnit(

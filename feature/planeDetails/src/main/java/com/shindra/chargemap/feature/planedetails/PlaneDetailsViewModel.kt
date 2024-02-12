@@ -11,31 +11,52 @@ import com.shindra.chargemap.core.model.ModelDetailAirplane
 import com.shindra.chargemap.feature.planedetails.navigation.manufacturerArgumentKey
 import com.shindra.chargemap.feature.planedetails.navigation.modelArgumentKey
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal typealias PlaneDetailUiState = UiState<List<PlaneDetailUi>>
 
 @HiltViewModel
 internal class PlaneDetailsViewModel @Inject constructor(
-    useCase: PlaneDetailsUseCase,
+    private val useCase: PlaneDetailsUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val manufacturer = savedStateHandle.get<String>(manufacturerArgumentKey).orEmpty()
     private val model = savedStateHandle.get<String>(modelArgumentKey).orEmpty()
 
-    val planeDetailsState: StateFlow<PlaneDetailUiState> = useCase(manufacturer, model).map {
+    private var _planeDetailsState = MutableStateFlow<PlaneDetailUiState>(UiState.Loading)
+
+    val planeDetailsState = _planeDetailsState.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5_000),
+        initialValue = UiState.Loading
+    )
+
+    private var planeDetailJob: Job? = null
+    init {
+        planeDetails()
+    }
+
+    fun planeDetails() {
+        planeDetailJob?.cancel()
+        _planeDetailsState.value = UiState.Loading
+        planeDetailJob = viewModelScope.launch {
+            network().collect {
+                _planeDetailsState.value = it
+            }
+        }
+    }
+
+
+    private fun network() = useCase(manufacturer, model).map {
         it.toUiModel()
     }.asUiState()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = UiState.Loading
-        )
 
 }
 

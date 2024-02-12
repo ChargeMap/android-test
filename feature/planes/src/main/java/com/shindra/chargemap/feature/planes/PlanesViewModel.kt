@@ -10,29 +10,52 @@ import com.shindra.chargemap.core.designsystem.components.asUiState
 import com.shindra.chargemap.feature.planes.bo.ListModel
 import com.shindra.chargemap.feature.planes.bo.UiAirplane
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 internal typealias PlaneUi = UiState<List<ListModel>>
 
 @HiltViewModel
 internal class PlanesViewModel @Inject constructor(
-    useCase: PlaneUseCase
+    private val useCase: PlaneUseCase
 ) : ViewModel() {
 
-    val planesByCategoryState: StateFlow<PlaneUi> = useCase()
-        .map {
-            it.toUiModel()
-        }
-        .asUiState()
+    private var _planesByCategoryState = MutableStateFlow<PlaneUi>(UiState.Loading)
+    val planesByCategoryState: StateFlow<PlaneUi> = _planesByCategoryState
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),
             initialValue = UiState.Loading
         )
+
+    private var planeJob: Job? = null
+
+    init {
+        planes()
+    }
+
+    fun planes() {
+        planeJob?.cancel()
+
+        _planesByCategoryState.value = UiState.Loading
+        viewModelScope.launch {
+            network().collect {
+                _planesByCategoryState.value = it
+            }
+        }
+    }
+
+    private fun network() = useCase()
+        .map {
+            it.toUiModel()
+        }
+        .asUiState()
 }
 
 private fun List<PlaneCategory>.toUiModel(): List<ListModel> {

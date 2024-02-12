@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.shindra.chargemap.core.designsystem.components.FullScreenErrorScreen
 import com.shindra.chargemap.core.designsystem.components.UiStateContent
 import com.shindra.chargemap.feature.planes.compose.PlaneCard
 import com.shindra.chargemap.feature.planes.compose.PlaneHeader
@@ -34,7 +35,8 @@ internal fun PlanesScreenRoute(
 
     PlanesScreen(
         planesByCategory = planesUiState,
-        onPlaneClick = onPlaneClick
+        onPlaneClick = onPlaneClick,
+        onRetry = { viewModel.planes() }
     )
 }
 
@@ -42,9 +44,13 @@ internal fun PlanesScreenRoute(
 @Composable
 internal fun PlanesScreen(
     planesByCategory: PlaneUi,
-    onPlaneClick: OnPlaneClick
+    onPlaneClick: OnPlaneClick,
+    onRetry: () -> Unit
 ) {
-    UiStateContent(state = planesByCategory) { pC ->
+    UiStateContent(
+        onError = { FullScreenErrorScreen(onRetry) },
+        state = planesByCategory
+    ) { pC ->
         LazyColumn(
             contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
