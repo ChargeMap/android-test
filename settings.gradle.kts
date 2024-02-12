@@ -1,4 +1,5 @@
 pluginManagement {
+    includeBuild("build-logic")
     repositories {
         google()
         mavenCentral()
@@ -13,6 +14,14 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Android Test"
+rootProject.name = "ChargeMap"
+
 include(":app")
- 
+include(":core:designsystem")
+include(":core:network")
+include(":core:data")
+include(":core:model")
+include(":feature:planes")
+include(":core:domain")
+include(":feature:planeDetails")
+include(":core:tests")

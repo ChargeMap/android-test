@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ninja_api_url">api.api-ninjas.com/v1/aircraft</string>
+
+
+</resources>

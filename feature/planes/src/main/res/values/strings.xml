@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="plane_toolbar_title">Avions</string>
+
+    <string name="plane_jet_category_title">Turboréacteur</string>
+    <string name="plane_piston_category_title">Moteur à piston</string>
+    <string name="plane_propjet_category_title">Turbopropulseur</string>
+
+</resources>
